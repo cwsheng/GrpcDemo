@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+//导入日期类型
+import "google/protobuf/timestamp.proto";
+//导入空类型
+import "google/protobuf/empty.proto";
+
+//命名空间
+option csharp_namespace = "GrpcServiceDemo";
+
+//包名称
+package weather;
+
+//天气服务
+service Weather {
+  //指定城市天气
+  rpc GetWeather (WeatherRequest) returns (WeatherForecastInfo);
+
+   //所有城市列表：入参为空
+  rpc GetWeatherList (google.protobuf.Empty) returns (WeatherList);
+}
+
+//请求具体城市名称
+message WeatherRequest {
+  string name = 1;
+}
+
+//返回天气数据列表
+message WeatherList{
+  repeated WeatherForecastInfo ListData =1;
+}
+
+//定义返回天气数据类型
+message WeatherForecastInfo {
+  //日期时间类型
+  google.protobuf.Timestamp Date = 1;
+  int32 TemperatureC = 2;
+  int32 TemperatureF = 3;
+  string Summary = 4;
+}
