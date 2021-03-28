@@ -10,6 +10,8 @@ namespace GrpcServiceDemo
 {
     public class Program
     {
+        public static readonly string SocketPath = Path.Combine(Path.GetTempPath(), "socket.tmp");
+
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
@@ -21,6 +23,14 @@ namespace GrpcServiceDemo
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureKestrel(options =>
+                    {
+                        if (File.Exists(SocketPath))
+                        {
+                            File.Delete(SocketPath);
+                        }
+                        options.ListenUnixSocket(SocketPath);
+                    });
                     webBuilder.UseStartup<Startup>();
                 });
     }

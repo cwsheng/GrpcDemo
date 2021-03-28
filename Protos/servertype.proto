@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcServiceDemo";
+
+package serviceTypeDemo;
+
+//服务类型Demo:用于展现gRpc四种服务方法
+service ServiceTypeDemo {
+
+  // Unary：一元方法
+  rpc UnaryCall (ExampleRequest) returns (ExampleResponse);
+
+  // Server streaming：服务流
+  rpc StreamingFromServer (ExampleRequest) returns (stream ExampleResponse);
+
+  // Client streaming：客户端流
+  rpc StreamingFromClient (stream ExampleRequest) returns (ExampleResponse);
+
+  // Bi-directional streaming：双向流
+  rpc StreamingBothWays (stream ExampleRequest) returns (stream ExampleResponse);
+
+}
+
+//请求对象
+message ExampleRequest {
+    int32 pageIndex = 1;
+    int32 pageSize = 2;
+    bool isDescending = 3;
+}
+
+//响应对象
+message ExampleResponse{
+    repeated string result = 1;
+    int32 total = 2;
+}
